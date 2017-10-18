@@ -47,5 +47,16 @@ ipcMain.on('click.save-con-btn', (event: any, arg: any) => {
 
     let db = new LocalLevel(arg.path);
     let cons = db.saveConnection(arg.name);
-    console.log('TODOOOO');
+    let mainWin = myglobal.get(myglobal.KEYS.MAIN_WIN);
+    mainWin.webContents.send('data.init-connection-reload');
+    closeWin();
 });
+
+ipcMain.on('click.close-con-btn', (event: any, arg: any) => {
+    closeWin();
+});
+
+function closeWin() {
+    let conWin = myglobal.get(myglobal.KEYS.CON_WIN);
+    conWin.close();
+}

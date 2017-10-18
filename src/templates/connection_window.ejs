@@ -10,8 +10,8 @@
     
     <br />
     <div class="input-group">
-        <label class="radio-inline"><input type="radio" name="choose-con-type">Local directory</label>
-        <label class="radio-inline"><input type="radio" name="choose-con-type">HTTP connection</label>
+        <label class="radio-inline"><input type="radio" name="choose-con-type" checked="">Local directory</label>
+        <label class="radio-inline"><input type="radio" name="choose-con-type" disabled="disabled">HTTP connection</label>
     </div>
 
     <div class="input-group">
@@ -26,11 +26,15 @@
 
 </div>
 
-<div>
-    <button type="button" class="btn btn-default" id="test-con-btn">Test connection</button>
-    <button type="button" class="btn btn-primary" id="save-con-btn">Save</button>
-    <button type="button" class="btn btn-default" id="close-conwin-btn">Cancle</button>
-</div>
+<nav class="navbar navbar-default navbar-fixed-bottom con-foot-bar" role="navigation">
+    <ul class="nav navbar-nav">
+        <button class="btn btn-success navbar-btn" id="test-con-btn">Test connection</button>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <button type="button" class="btn btn-primary navbar-btn" id="save-con-btn">Save</button>
+        <button type="button" class="btn btn-default navbar-btn" id="close-conwin-btn">Cancle</button>
+    </ul>
+<nav>
 
 <script>
     require('./events/renderer/connection.js')

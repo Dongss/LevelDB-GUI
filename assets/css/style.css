@@ -42,3 +42,7 @@
 .level-keys .level-key-active {
     background-color: #AFAFAF;
 }
+.con-foot-bar {
+    padding-right: 50px;
+    padding-left: 50px;
+}

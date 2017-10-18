@@ -25,7 +25,7 @@ $('#test-con-btn').on('click', () => {
 });
 
 $('#close-conwin-btn').on('click', () => {
-    console.log($('#con-local-dir-input').val());
+    ipcRenderer.send('click.close-con-btn');
 });
 
 ipcRenderer.on('click.open-folder-btn.reply', (event: any, arg: string) => {

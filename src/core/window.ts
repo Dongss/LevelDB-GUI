@@ -32,4 +32,7 @@ export class Window {
     onClosed() {
         this.window = null;
     }
+    close() {
+        this.window.close();
+    }
 }

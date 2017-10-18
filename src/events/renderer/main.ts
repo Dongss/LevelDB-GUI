@@ -54,6 +54,10 @@ ipcRenderer.on('data.init-connection.reply', (event: any, arg: any) => {
     ($('.nav-tabs') as any).scrollingTabs();
 });
 
+ipcRenderer.on('data.init-connection-reload', (event: any, arg: any) => {
+    ipcRenderer.send('data.all-connections');
+});
+
 let editors: {[key: string]: any} = {};
 
 ipcRenderer.on('data.get-by-key.reply', (event: any, arg: any) => {
