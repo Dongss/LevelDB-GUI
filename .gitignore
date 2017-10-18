@@ -1,0 +1,4 @@
+npm-debug*
+*.swp
+node_modules
+dist

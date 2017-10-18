@@ -1,0 +1,49 @@
+{
+  "name": "leveldb-gui",
+  "version": "0.0.1",
+  "description": "A LevelDB GUI, built with Electron",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "build-html": "ejs-cli --base-dir src/templates/ \"*_window.ejs\" --out dist/",
+    "lint": "tslint 'src/**/*.ts'",
+    "dev": "npm run build && npm run build-html && cd dist && electron .",
+    "electron-rebuild": "./node_modules/.bin/electron-rebuild",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dongss/LevelDB-GUI"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Shaoshuai Dong",
+    "email": "dongsoso@hotmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "ejs": "^2.5.7",
+    "jquery": "^3.2.1",
+    "jquery-bootstrap-scrolling-tabs": "^2.1.0",
+    "jsoneditor": "^5.9.6",
+    "leveldown": "^1.8.0",
+    "levelup": "^1.3.9",
+    "multilevel": "^7.3.0",
+    "nconf": "^0.8.4"
+  },
+  "devDependencies": {
+    "@types/ejs": "^2.3.33",
+    "@types/jquery": "^3.2.12",
+    "@types/nconf": "0.0.34",
+    "ejs-cli": "^2.0.0",
+    "electron": "1.7.6",
+    "electron-rebuild": "^1.6.0",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.2"
+  }
+}

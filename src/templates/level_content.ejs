@@ -1,0 +1,26 @@
+<div role="tabpanel" class="tab-pane active" id="<%= id %>">
+    <div class="row">
+        <div class="col-md-3 level-keys">
+            <div>
+                <h3><%= name %></h3>
+            </div>
+            <div>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            
+                <% keys.forEach(function(key){ %>
+                    <p class="level-key" data-toggle="tooltip" data-placement="top" title="<%= key %>"><a href="#" level-key="<%= key %>"><%= key %><a></p>
+                <% }); %>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="level-data-key"></div>
+            <div class="level-data"></div>
+        </div>
+    </div>
+</div>

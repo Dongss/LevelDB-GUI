@@ -1,0 +1,48 @@
+<%- include('./header'); %>
+
+<%- include('./toolbar'); %>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="sidebar-nav">
+            <div class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="visible-xs navbar-brand">Sidebar menu</span>
+                </div>
+                <div class="navbar-collapse collapse sidebar-navbar-collapse">
+                <ul class="nav navbar-nav" id="con-list-ul">
+                </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-9" id="level-out">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist" id="keys-list-tab-ul">
+            
+                <li role="presentation" class="active"><a href="#tab-webcome" role="tab" data-toggle="tab">Welcome &nbsp;&nbsp;
+                    <button type="button" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content" id="keys-list-tab-content">
+                <%- include('./webcome'); %>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+ <%- include('./footbar'); %>
+
+ <%- include('./footer'); %>

@@ -1,0 +1,44 @@
+.con-form {
+    margin: 50px;
+}
+
+/* make sidebar nav vertical */ 
+
+.sidebar-nav .navbar .navbar-collapse {
+    padding: 0;
+    max-height: none;
+}
+.sidebar-nav .navbar ul {
+    float: none;
+    display: block;
+}
+.sidebar-nav .navbar li {
+    float: none;
+    display: block;
+}
+.sidebar-nav .navbar li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+.con-li active {
+    background-color: #AFAFAF;
+}
+.level-keys {
+    background-color: #e7e7e7;
+    overflow-y: auto;
+}
+.level-keys p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.level-keys p:hover {
+    background-color: #AFAFAF;
+}
+.level-keys a {
+    text-decoration: none;
+}
+.level-keys .level-key-active {
+    background-color: #AFAFAF;
+}

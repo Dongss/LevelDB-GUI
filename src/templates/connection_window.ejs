@@ -1,0 +1,37 @@
+ <%- include('./header'); %>
+
+
+
+<div class="con-form">
+    <h3> Edit your connection: </h3>
+
+    <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Connection name</span>
+        <input type="text" class="form-control" placeholder="my-connection" aria-describedby="basic-addon1" id="con-name-input">
+    </div>
+    
+    <br />
+    <div class="input-group">
+        <label class="radio-inline"><input type="radio" name="choose-con-type">Local directory</label>
+        <label class="radio-inline"><input type="radio" name="choose-con-type">HTTP connection</label>
+    </div>
+
+    <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Directory path</span>
+        <input type="text" class="form-control" placeholder="/data/mydb/" aria-describedby="basic-addon1" id="con-local-dir-input">
+        <div class="input-group-btn"> 
+            <button type="button" class="btn btn-default" aria-label="folder" id="open-folder-btn">
+            <span class="glyphicon glyphicon-folder-open"></span>
+            </button> 
+        </div>
+    </div>
+
+</div>
+
+<div>
+    <button type="button" class="btn btn-default" id="test-con-btn">Test connection</button>
+    <button type="button" class="btn btn-primary" id="save-con-btn">Save</button>
+    <button type="button" class="btn btn-default" id="close-conwin-btn">Cancle</button>
+</div>
+
+ <%- include('./footer'); %>
