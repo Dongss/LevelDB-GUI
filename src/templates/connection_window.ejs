@@ -1,7 +1,5 @@
  <%- include('./header'); %>
 
-
-
 <div class="con-form">
     <h3> Edit your connection: </h3>
 
@@ -33,5 +31,9 @@
     <button type="button" class="btn btn-primary" id="save-con-btn">Save</button>
     <button type="button" class="btn btn-default" id="close-conwin-btn">Cancle</button>
 </div>
+
+<script>
+    require('./events/renderer/connection.js')
+</script>
 
  <%- include('./footer'); %>

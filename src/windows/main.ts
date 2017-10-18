@@ -2,7 +2,6 @@ import * as electron from 'electron';
 const path = require('path');
 const url = require('url');
 import {Window} from '../core/window';
-import * as hander from '../events/handler';
 import * as myglobal from '../libs/myglobal';
 import * as config from '../libs/configure';
 
@@ -21,11 +20,11 @@ export class MainWindow extends Window {
         myglobal.set(myglobal.KEYS.MAIN_WIN, this.window);
         this.eventHandler();
     }
+    onClosed() {
+        this.window = null;
+        myglobal.set(myglobal.KEYS.MAIN_WIN, null);
+    }
     eventHandler() {
-        hander.aboutBtnClick(this.window);
-        hander.newConBtnClick(this.window);
-        hander.getAllConnections(this.window);
-        hander.initConnection(this.window);
-        hander.getByKey(this.window);
+       require('../events/handler/main');
     }
 }

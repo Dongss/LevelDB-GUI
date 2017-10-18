@@ -9,6 +9,6 @@ export function get(key: KEYS) {
     return vars[key];
 }
 
-export function set(key: KEYS, value: string) {
+export function set(key: KEYS, value: any) {
     vars[key] = value;
 }

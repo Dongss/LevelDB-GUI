@@ -2,7 +2,6 @@ import * as electron from 'electron';
 const path = require('path');
 const url = require('url');
 import {Window} from '../core/window';
-import * as hander from '../events/handler';
 import * as myglobal from '../libs/myglobal';
 
 export class ConnectionWindow extends Window {
@@ -25,9 +24,11 @@ export class ConnectionWindow extends Window {
         // devtool
         this.window.webContents.openDevTools();
     }
+    onClosed() {
+        this.window = null;
+        myglobal.set(myglobal.KEYS.CON_WIN, null);
+    }
     eventHandler() {
-        hander.openFolderClick(this.window);
-        hander.testConClick(this.window);
-        hander.saveConClick(this.window);
+       require('../events/handler/connection');
     }
  }
