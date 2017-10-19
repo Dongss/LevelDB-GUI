@@ -24,8 +24,18 @@ $('#con-list-out').ready(() => {
 
 $('#con-list-ul').on('dblclick', '.con-li', (e) => {
     let conId = e.target.getAttribute('con-id');
-    $('.con-li').removeClass('active');
-    $(e.target).addClass('active');
+
+    // if tab already exist
+    let el = $(`#keys-list-tab-ul a[href="#${conId}"]`);
+    if (el.length > 0) {
+        $('#keys-list-tab-ul li').removeClass('active');
+        el.parent('li').addClass('active');
+        $('#keys-list-tab-content .tab-pane').removeClass('active');
+        $(`.tab-pane#${conId}`).addClass('active');
+        return;
+    }
+    $('.con-li').removeClass('conli-active');
+    $(e.target).parent('.con-li').addClass('conli-active');
     ipcRenderer.send('data.init-connection', conId);
 });
 
@@ -51,7 +61,13 @@ ipcRenderer.on('data.init-connection.reply', (event: any, arg: any) => {
     $('#keys-list-tab-content .tab-pane').removeClass('active');
     $('#keys-list-tab-ul').append(arg.tabStr);
     $('#keys-list-tab-content').append(arg.contentStr);
-    ($('.nav-tabs') as any).scrollingTabs();
+    ($('.nav-tabs') as any).scrollingTabs({
+        tabClickHandler: function (e: any) {
+            let conId = $(this).attr('href').substring(1);
+            $('.con-li').removeClass('conli-active');
+            $(`li.con-li[con-id="${conId}"]`).addClass('conli-active');
+        }
+    });
 });
 
 ipcRenderer.on('data.init-connection-reload', (event: any, arg: any) => {

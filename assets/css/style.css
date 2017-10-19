@@ -20,8 +20,11 @@
     padding-top: 12px;
     padding-bottom: 12px;
 }
-.con-li active {
-    background-color: #AFAFAF;
+.conli-active {
+    background-color: #dedede;
+}
+.conli-active>a {
+    color: #709cf1 !important;
 }
 .level-keys {
     background-color: #e7e7e7;
