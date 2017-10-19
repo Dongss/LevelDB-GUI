@@ -40,10 +40,11 @@ let currentCons: {[key: string]: any} = {};
 const KEYS_TAB = `
 <li role="presentation" class="active">
     <a href="#<%= id %>" role="tab" data-toggle="tab"> <%= name %> &nbsp;&nbsp;
-        <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+    <button type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
     </a>
+    12
 </li>
 `;
 
@@ -117,6 +118,10 @@ ipcMain.on('data.get-by-key', (event: any, params: any) => {
     });
 });
 
+ipcMain.on('data.close-con', (event: any, params: any) => {
+    _releaseConnection(params.id);
+});
+
 function _allConnections(event: any) {
     let connections = config.get('connections') || [];
     ejs.renderFile('../src/templates/connection_list.ejs', {
@@ -128,4 +133,11 @@ function _allConnections(event: any) {
         }
         event.sender.send('data.all-connections.reply', str);
     });
+}
+
+function _releaseConnection(id: string) {
+    let con = currentCons[id];
+    if (!con) return;
+    con.disconnect();
+    currentCons[id] = null;
 }

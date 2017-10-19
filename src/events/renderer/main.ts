@@ -27,6 +27,7 @@ $('#con-list-ul').on('dblclick', '.con-li', (e) => {
 
     // if tab already exist
     let el = $(`#keys-list-tab-ul a[href="#${conId}"]`);
+
     if (el.length > 0) {
         $('#keys-list-tab-ul li').removeClass('active');
         el.parent('li').addClass('active');
@@ -63,8 +64,43 @@ ipcRenderer.on('data.init-connection.reply', (event: any, arg: any) => {
     $('#keys-list-tab-content').append(arg.contentStr);
     ($('.nav-tabs') as any).scrollingTabs({
         tabClickHandler: function (e: any) {
+            // if close button clicked
+            if ($(e.target).is('span')) {
+                // close a tab
+                let el = $(e.target).parents('a');
+                let conId = el.attr('href').substring(1);
+                let prevEl = el.parents('li').prev('li');
+                let nextEl = el.parents('li').next('li');
+                let setOtherActive = !!el.parents('li').hasClass('active');
+
+                el.parents('li').remove();
+                $(`.tab-content #${conId}`).remove();
+
+                if (conId !== 'tab-welcome') {
+                    // release connection
+                    ipcRenderer.send('data.close-con', { id: conId });
+                }
+
+                // get prev tab, set active
+                if (setOtherActive) {
+                    $('.con-li').removeClass('conli-active');
+                    if (prevEl.length > 0) {
+                        let prevId = prevEl.children('a').attr('href').substring(1);
+                        prevEl.addClass('active');
+                            $(`li.con-li[con-id="${prevId}"]`).addClass('conli-active');
+                        $(`.tab-content #${prevId}`).addClass('active');
+                    } else if (nextEl.length > 0) {
+                        let nextId = nextEl.children('a').attr('href').substring(1);
+                        nextEl.addClass('active');
+                        $(`.tab-content #${nextId}`).addClass('active');
+                        $(`li.con-li[con-id="${nextId}"]`).addClass('conli-active');
+                    }
+                }
+                return;
+            }
             let conId = $(this).attr('href').substring(1);
             $('.con-li').removeClass('conli-active');
+            if (conId === 'tab-welcome') return;
             $(`li.con-li[con-id="${conId}"]`).addClass('conli-active');
         }
     });
