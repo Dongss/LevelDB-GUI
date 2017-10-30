@@ -9,6 +9,7 @@ import * as url from 'url';
 import * as path from 'path';
 import 'jquery-bootstrap-scrolling-tabs';
 const JSONEditor = require('jsoneditor');
+require('jquery-contextmenu');
 
 $('#about-btn').on('click', () => {
     ipcRenderer.send('click.about-btn');
@@ -35,8 +36,6 @@ $('#con-list-ul').on('dblclick', '.con-li', (e) => {
         $(`.tab-pane#${conId}`).addClass('active');
         return;
     }
-    $('.con-li').removeClass('conli-active');
-    $(e.target).parent('.con-li').addClass('conli-active');
     ipcRenderer.send('data.init-connection', conId);
 });
 
@@ -53,15 +52,18 @@ $(document).on('click', '.level-key', (e) => {
 
 ipcRenderer.on('data.all-connections.reply', (event: any, arg: string) => {
     $('#con-list-ul').html(arg);
+    _initConCtx();
 });
 
 ipcRenderer.on('data.init-connection.reply', (event: any, arg: any) => {
-    let _id = arg._id;
-    let keys = arg.keys;
+    let _id = arg.id;
     $('#keys-list-tab-ul li').removeClass('active');
     $('#keys-list-tab-content .tab-pane').removeClass('active');
     $('#keys-list-tab-ul').append(arg.tabStr);
     $('#keys-list-tab-content').append(arg.contentStr);
+    $('.con-li').removeClass('conli-active');
+    $(`li.con-li[con-id="${_id}"]`).addClass('conli-active');
+    $(`li.con-li[con-id="${_id}"]`).addClass('conli-opened');
     ($('.nav-tabs') as any).scrollingTabs({
         tabClickHandler: function (e: any) {
             // if close button clicked
@@ -128,3 +130,56 @@ ipcRenderer.on('data.get-by-key.reply', (event: any, arg: any) => {
     let editor = new JSONEditor(el[0], options, JSON.parse(arg.data));
     editors[arg.id] = editor;
 });
+
+function _initConCtx() {
+    ($ as any).contextMenu({
+        // define which elements trigger this menu
+        selector: '.con-li',
+        // callback: function(key: any, options: any) {
+        //     let m = 'clicked: ' + key;
+        //     window.console && console.log(m) || alert(m);
+        // },
+        // define the elements of the menu
+        items: {
+            'Open': {
+                name: 'Open',
+                callback: function(key: any, opt: any) {
+                    alert('Open TODO!');
+                }
+            },
+            'Close': {
+                name: 'Close',
+                callback: function(key: any, opt: any) {
+                    alert('Close TODO!');
+                }
+            },
+            'sep0': '---------',
+            'Edit': {
+                name: 'Edit',
+                icon: 'edit',
+                callback: function(key: any, opt: any) {
+                    alert('edit!');
+                }
+            },
+            'Delete': {
+                name: 'Delete',
+                icon: 'delete',
+                callback: function(key: any, opt: any) {
+                    let conId = this[0].getAttribute('con-id');
+                    alert('delete!' + conId);
+                }
+            },
+            'sep1': '---------',
+            'Properties': {
+                name: 'Properties',
+                callback: function(key: any, opt: any) {
+                    alert('Properties TODO!');
+                }
+            }
+        }
+    });
+}
+
+function _editConnection(id: string) {}
+
+function _deleteConnection(id: string) {}

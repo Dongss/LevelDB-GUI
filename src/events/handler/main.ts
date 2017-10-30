@@ -90,6 +90,7 @@ ipcMain.on('data.init-connection', (event: any, id: string) => {
                 return;
             }
             event.sender.send('data.init-connection.reply', {
+                id: conConfig._id,
                 tabStr: tabStr,
                 contentStr: contentStr
             });
