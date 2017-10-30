@@ -26,6 +26,9 @@
 .conli-active>a {
     color: #709cf1 !important;
 }
+.conli-opened>a>span {
+    color: #75af58 !important;
+}
 .level-keys {
     background-color: #e7e7e7;
     overflow-y: auto;
