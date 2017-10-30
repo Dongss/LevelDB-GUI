@@ -144,7 +144,8 @@ function _initConCtx() {
             'Open': {
                 name: 'Open',
                 callback: function(key: any, opt: any) {
-                    alert('Open TODO!');
+                    let conId = this[0].getAttribute('con-id');
+                    ipcRenderer.send('data.init-connection', conId);
                 }
             },
             'Close': {
