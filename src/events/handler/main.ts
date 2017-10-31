@@ -120,7 +120,7 @@ ipcMain.on('data.get-by-key', (event: any, params: any) => {
 });
 
 ipcMain.on('data.close-con', (event: any, params: any) => {
-    _releaseConnection(params.id);
+    _releaseConnection(event, params.id);
 });
 
 function _allConnections(event: any) {
@@ -136,9 +136,10 @@ function _allConnections(event: any) {
     });
 }
 
-function _releaseConnection(id: string) {
+function _releaseConnection(event: any, id: string) {
     let con = currentCons[id];
     if (!con) return;
     con.disconnect();
     currentCons[id] = null;
+    event.sender.send('data.close-connection.reply', {id: id});
 }

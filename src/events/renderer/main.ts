@@ -70,34 +70,8 @@ ipcRenderer.on('data.init-connection.reply', (event: any, arg: any) => {
             if ($(e.target).is('span')) {
                 // close a tab
                 let el = $(e.target).parents('a');
-                let conId = el.attr('href').substring(1);
-                let prevEl = el.parents('li').prev('li');
-                let nextEl = el.parents('li').next('li');
-                let setOtherActive = !!el.parents('li').hasClass('active');
-
-                el.parents('li').remove();
-                $(`.tab-content #${conId}`).remove();
-
-                if (conId !== 'tab-welcome') {
-                    // release connection
-                    ipcRenderer.send('data.close-con', { id: conId });
-                }
-
-                // get prev tab, set active
-                if (setOtherActive) {
-                    $('.con-li').removeClass('conli-active');
-                    if (prevEl.length > 0) {
-                        let prevId = prevEl.children('a').attr('href').substring(1);
-                        prevEl.addClass('active');
-                            $(`li.con-li[con-id="${prevId}"]`).addClass('conli-active');
-                        $(`.tab-content #${prevId}`).addClass('active');
-                    } else if (nextEl.length > 0) {
-                        let nextId = nextEl.children('a').attr('href').substring(1);
-                        nextEl.addClass('active');
-                        $(`.tab-content #${nextId}`).addClass('active');
-                        $(`li.con-li[con-id="${nextId}"]`).addClass('conli-active');
-                    }
-                }
+                let id = el.attr('href').substring(1);
+                _clearConnection(id);
                 return;
             }
             let conId = $(this).attr('href').substring(1);
@@ -110,6 +84,10 @@ ipcRenderer.on('data.init-connection.reply', (event: any, arg: any) => {
 
 ipcRenderer.on('data.init-connection-reload', (event: any, arg: any) => {
     ipcRenderer.send('data.all-connections');
+});
+
+ipcRenderer.on('data.close-connection.reply', (event: any, arg: any) => {
+    _clearConnection(arg.id);
 });
 
 let editors: {[key: string]: any} = {};
@@ -135,50 +113,87 @@ function _initConCtx() {
     ($ as any).contextMenu({
         // define which elements trigger this menu
         selector: '.con-li',
-        // callback: function(key: any, options: any) {
-        //     let m = 'clicked: ' + key;
-        //     window.console && console.log(m) || alert(m);
-        // },
-        // define the elements of the menu
-        items: {
-            'Open': {
-                name: 'Open',
-                callback: function(key: any, opt: any) {
-                    let conId = this[0].getAttribute('con-id');
-                    ipcRenderer.send('data.init-connection', conId);
+        build: function (trigger: any, e: any) {
+            console.log(trigger);
+            console.log(e);
+            return {
+                items: {
+                    'Open': {
+                        name: 'Open',
+                        callback: function(key: any, opt: any) {
+                            let conId = this[0].getAttribute('con-id');
+                            ipcRenderer.send('data.init-connection', conId);
+                        }
+                    },
+                    'Close': {
+                        name: 'Close',
+                        callback: function(key: any, opt: any) {
+                            let conId = this[0].getAttribute('con-id');
+                            ipcRenderer.send('data.close-con', {id: conId});
+                        }
+                    },
+                    'sep0': '---------',
+                    'Edit': {
+                        name: 'Edit',
+                        icon: 'edit',
+                        callback: function(key: any, opt: any) {
+                            alert('edit!');
+                        }
+                    },
+                    'Delete': {
+                        name: 'Delete',
+                        icon: 'delete',
+                        callback: function(key: any, opt: any) {
+                            let conId = this[0].getAttribute('con-id');
+                            alert('delete!' + conId);
+                        }
+                    },
+                    'sep1': '---------',
+                    'Properties': {
+                        name: 'Properties',
+                        callback: function(key: any, opt: any) {
+                            alert('Properties TODO!');
+                        }
+                    }
                 }
-            },
-            'Close': {
-                name: 'Close',
-                callback: function(key: any, opt: any) {
-                    alert('Close TODO!');
-                }
-            },
-            'sep0': '---------',
-            'Edit': {
-                name: 'Edit',
-                icon: 'edit',
-                callback: function(key: any, opt: any) {
-                    alert('edit!');
-                }
-            },
-            'Delete': {
-                name: 'Delete',
-                icon: 'delete',
-                callback: function(key: any, opt: any) {
-                    let conId = this[0].getAttribute('con-id');
-                    alert('delete!' + conId);
-                }
-            },
-            'sep1': '---------',
-            'Properties': {
-                name: 'Properties',
-                callback: function(key: any, opt: any) {
-                    alert('Properties TODO!');
-                }
-            }
+            };
         }
     });
+}
+
+function _clearConnection(conId: string) {
+    let el = $(`#keys-list-tab-ul a[href="#${conId}"]`);
+
+    // let conId = el.attr('href').substring(1);
+    let prevEl = el.parents('li').prev('li');
+    let nextEl = el.parents('li').next('li');
+    let setOtherActive = !!el.parents('li').hasClass('active');
+
+    el.parents('li').remove();
+    $(`.tab-content #${conId}`).remove();
+
+    if (conId !== 'tab-welcome') {
+        // release connection
+        ipcRenderer.send('data.close-con', { id: conId });
+    }
+
+    // get prev tab, set active
+    if (setOtherActive) {
+        $('.con-li').removeClass('conli-active');
+        if (prevEl.length > 0) {
+            let prevId = prevEl.children('a').attr('href').substring(1);
+            prevEl.addClass('active');
+                $(`li.con-li[con-id="${prevId}"]`).addClass('conli-active');
+            $(`.tab-content #${prevId}`).addClass('active');
+        } else if (nextEl.length > 0) {
+            let nextId = nextEl.children('a').attr('href').substring(1);
+            nextEl.addClass('active');
+            $(`.tab-content #${nextId}`).addClass('active');
+            $(`li.con-li[con-id="${nextId}"]`).addClass('conli-active');
+        }
+    }
+
+    $(`li.con-li[con-id="${conId}"]`).removeClass('conli-opened');
 }
 
 function _editConnection(id: string) {}
