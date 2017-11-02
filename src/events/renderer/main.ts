@@ -55,6 +55,8 @@ ipcRenderer.on('data.all-connections.reply', (event: any, arg: string) => {
     _initConCtx();
 });
 
+let currentConIds: string[] = [];
+
 ipcRenderer.on('data.init-connection.reply', (event: any, arg: any) => {
     let _id = arg.id;
     $('#keys-list-tab-ul li').removeClass('active');
@@ -64,6 +66,7 @@ ipcRenderer.on('data.init-connection.reply', (event: any, arg: any) => {
     $('.con-li').removeClass('conli-active');
     $(`li.con-li[con-id="${_id}"]`).addClass('conli-active');
     $(`li.con-li[con-id="${_id}"]`).addClass('conli-opened');
+    currentConIds.push(_id);
     ($('.nav-tabs') as any).scrollingTabs({
         tabClickHandler: function (e: any) {
             // if close button clicked
@@ -114,21 +117,23 @@ function _initConCtx() {
         // define which elements trigger this menu
         selector: '.con-li',
         build: function (trigger: any, e: any) {
-            console.log(trigger);
-            console.log(e);
+            let conId = $(trigger)[0].getAttribute('con-id');
+            let opened = currentConIds.indexOf(conId) > -1;
             return {
                 items: {
                     'Open': {
                         name: 'Open',
+                        disabled: opened,
                         callback: function(key: any, opt: any) {
-                            let conId = this[0].getAttribute('con-id');
+                            // let conId = this[0].getAttribute('con-id');
                             ipcRenderer.send('data.init-connection', conId);
                         }
                     },
                     'Close': {
                         name: 'Close',
+                        disabled: !opened,
                         callback: function(key: any, opt: any) {
-                            let conId = this[0].getAttribute('con-id');
+                            // let conId = this[0].getAttribute('con-id');
                             ipcRenderer.send('data.close-con', {id: conId});
                         }
                     },
@@ -194,6 +199,10 @@ function _clearConnection(conId: string) {
     }
 
     $(`li.con-li[con-id="${conId}"]`).removeClass('conli-opened');
+    let index = currentConIds.indexOf(conId);
+    if (index > -1) {
+        currentConIds.splice(index, 1);
+    }
 }
 
 function _editConnection(id: string) {}
