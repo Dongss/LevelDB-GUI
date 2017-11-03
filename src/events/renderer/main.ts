@@ -30,6 +30,8 @@ $('#con-list-ul').on('dblclick', '.con-li', (e) => {
     let el = $(`#keys-list-tab-ul a[href="#${conId}"]`);
 
     if (el.length > 0) {
+        $('.con-li').removeClass('conli-active');
+        $(`li.con-li[con-id="${conId}"]`).addClass('conli-active');
         $('#keys-list-tab-ul li').removeClass('active');
         el.parent('li').addClass('active');
         $('#keys-list-tab-content .tab-pane').removeClass('active');
