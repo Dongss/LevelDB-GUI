@@ -10,12 +10,17 @@ $('#open-folder-btn').on('click', () => {
     ipcRenderer.send('click.open-folder-btn');
 });
 
+let toUpdateCon: string = null;
+
 $('#save-con-btn').on('click', () => {
     let dirPath = $('#con-local-dir-input').val();
     let name = $('#con-name-input').val();
+    let isUpdate = $('#save-con-btn').html() === 'Update';
     ipcRenderer.send('click.save-con-btn', {
         name: (name as string).trim(),
-        path: (dirPath as string).trim()
+        path: (dirPath as string).trim(),
+        isUpdate: isUpdate,
+        id: toUpdateCon
     });
 });
 
@@ -26,6 +31,13 @@ $('#test-con-btn').on('click', () => {
 
 $('#close-conwin-btn').on('click', () => {
     ipcRenderer.send('click.close-con-btn');
+});
+
+ipcRenderer.on('data.connection-fill', (event: any, arg: any) => {
+    $('#con-local-dir-input').val(arg.conf.dirPath);
+    $('#con-name-input').val(arg.conf.name);
+    $('#save-con-btn').html('Update');
+    toUpdateCon = arg.id;
 });
 
 ipcRenderer.on('click.open-folder-btn.reply', (event: any, arg: string) => {

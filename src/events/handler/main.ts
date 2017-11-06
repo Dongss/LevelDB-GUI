@@ -10,6 +10,9 @@ import * as myglobal from '../../libs/myglobal';
 import * as ejs from 'ejs';
 import * as config from '../../libs/configure';
 
+ipcMain.on('common.message-box', (event: any, arg: any) => {
+    dialog.showMessageBox(arg);
+});
 
 ipcMain.on('click.about-btn', (event: any, arg: any) => {
     dialog.showMessageBox({
@@ -29,6 +32,24 @@ ipcMain.on('click.newcon-btn', (event: any, arg: any) => {
     }
     let w = new ConnectionWindow();
     w.init(myglobal.get(myglobal.KEYS.MAIN_WIN));
+    if (!!arg) {
+        let id = arg.id;
+        let cons = config.get('connections');
+        let conConfig = cons.find((v: any) => v._id === id);
+        if (!conConfig) {
+            dialog.showErrorBox('Get connection failed !', `can not find this connection ${id}`);
+            return;
+        }
+        w.window.webContents.on('did-finish-load', () => {
+            w.send('data.connection-fill', {
+                id: id,
+                conf: {
+                    name: conConfig.name,
+                    dirPath: conConfig.info
+                }
+            });
+        });
+    }
 });
 
 ipcMain.on('data.all-connections', (event: any, arg: any) => {

@@ -35,4 +35,7 @@ export class Window {
     close() {
         this.window.close();
     }
+    send(channel: string, arg?: any) {
+        this.window.webContents.send(channel, arg);
+    }
 }

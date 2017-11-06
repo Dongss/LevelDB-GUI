@@ -73,4 +73,12 @@ export class LocalLevel extends Level {
         });
         config.set('connections', connections);
     }
+    updateConnection(dir: string) {
+        let connections = config.get('connections') || [];
+        let me = connections.find((v: any) => v._id === this.id);
+        me.name = this.name;
+        me.info = dir;
+        me.update_at = Math.floor(Date.now() / 1000);
+        config.set('connections', connections);
+    }
 }

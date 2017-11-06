@@ -144,7 +144,7 @@ function _initConCtx() {
                         name: 'Edit',
                         icon: 'edit',
                         callback: function(key: any, opt: any) {
-                            alert('edit!');
+                            _editConnection(conId);
                         }
                     },
                     'Delete': {
@@ -207,6 +207,20 @@ function _clearConnection(conId: string) {
     }
 }
 
-function _editConnection(id: string) {}
+function _editConnection(id: string) {
+    if (currentConIds.indexOf(id) > -1) {
+        ipcRenderer.send('common.message-box', {
+            type: 'warning',
+            title: 'Edit connection',
+            buttons: ['OK'],
+            message: 'Please close this connection before edit',
+            detail: 'Please close this connection before edit'
+        });
+        return;
+    }
+    ipcRenderer.send('click.newcon-btn', {
+        id: id
+    });
+}
 
 function _deleteConnection(id: string) {}
