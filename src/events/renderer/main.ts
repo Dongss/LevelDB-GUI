@@ -151,8 +151,7 @@ function _initConCtx() {
                         name: 'Delete',
                         icon: 'delete',
                         callback: function(key: any, opt: any) {
-                            let conId = this[0].getAttribute('con-id');
-                            alert('delete!' + conId);
+                            _deleteConnection(conId);
                         }
                     },
                     'sep1': '---------',
@@ -223,4 +222,18 @@ function _editConnection(id: string) {
     });
 }
 
-function _deleteConnection(id: string) {}
+function _deleteConnection(id: string) {
+    if (currentConIds.indexOf(id) > -1) {
+        ipcRenderer.send('common.message-box', {
+            type: 'warning',
+            title: 'Edit connection',
+            buttons: ['OK'],
+            message: 'Please close this connection before edit',
+            detail: 'Please close this connection before edit'
+        });
+        return;
+    }
+    ipcRenderer.send('click.delete-connection', {
+        id: id
+    });
+}

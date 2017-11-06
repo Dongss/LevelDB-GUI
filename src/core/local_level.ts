@@ -81,4 +81,13 @@ export class LocalLevel extends Level {
         me.update_at = Math.floor(Date.now() / 1000);
         config.set('connections', connections);
     }
+    static deleteConnection(id: string) {
+        let connections = config.get('connections') || [];
+        let toDelete = connections.findIndex((v: any) => v._id === id);
+        if (toDelete < 0) {
+            return;
+        }
+        connections.splice(toDelete, 1);
+        config.set('connections', connections);
+    }
 }

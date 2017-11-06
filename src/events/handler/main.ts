@@ -144,6 +144,22 @@ ipcMain.on('data.close-con', (event: any, params: any) => {
     _releaseConnection(event, params.id);
 });
 
+ipcMain.on('click.delete-connection', (event: any, params: any) => {
+    dialog.showMessageBox({
+        type: 'question',
+        title: 'Delete connection',
+        buttons: ['Cancel', 'Yes'],
+        message: 'Are you sure you want to delete this connection?',
+        detail: 'Are you sure you want to delete this connection?'
+    }, (r) => {
+        if (r === 1) {
+            LocalLevel.deleteConnection(params.id);
+            _allConnections(event);
+        }
+        return;
+    });
+});
+
 function _allConnections(event: any) {
     let connections = config.get('connections') || [];
     ejs.renderFile('../src/templates/connection_list.ejs', {
