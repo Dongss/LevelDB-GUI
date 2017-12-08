@@ -41,7 +41,7 @@ $('#con-list-ul').on('dblclick', '.con-li', (e) => {
     ipcRenderer.send('data.init-connection', conId);
 });
 
-$(document).on('click', '.level-key', (e) => {
+$(document).on('click', '.level-key a', (e) => {
     $('.level-key').removeClass('level-key-active');
     $(e.target).parent('p').addClass('level-key-active');
     let key = e.target.getAttribute('level-key');
