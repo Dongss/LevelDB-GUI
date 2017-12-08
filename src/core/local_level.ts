@@ -1,6 +1,7 @@
 import {ConnectionMode, Level} from './level';
 import * as fs from 'fs';
 const levelup = require('levelup');
+const leveldown = require('leveldown');
 import * as config from '../libs/configure';
 import * as myutil from '../libs/util';
 
@@ -28,7 +29,7 @@ export class LocalLevel extends Level {
         if (!fs.existsSync(this.dbPath)) {
             throw new Error(`dir not exist: ${this.dbPath}`);
         }
-        this.mydb = levelup(this.dbPath);
+        this.mydb = levelup(leveldown(this.dbPath));
     }
     async disconnect() {
         await this.mydb.close();
@@ -55,8 +56,7 @@ export class LocalLevel extends Level {
         });
     }
     async getByKey(key: string) {
-        let get = myutil.promisify(this.mydb.get, this.mydb);
-        return await get(key);
+        return await this.mydb.get(key);
     }
     saveConnection(name: string) {
         let connections = config.get('connections') || [];
