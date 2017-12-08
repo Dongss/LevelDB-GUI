@@ -204,6 +204,8 @@ function _clearConnection(conId: string) {
     if (index > -1) {
         currentConIds.splice(index, 1);
     }
+
+    editors[conId] = null;
 }
 
 function _editConnection(id: string) {
